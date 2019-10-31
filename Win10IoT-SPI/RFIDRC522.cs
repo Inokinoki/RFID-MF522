@@ -17,6 +17,7 @@ namespace RFIDRC522
         private const byte command = 0x01;
         private const byte control = 0x0C;
         private const byte error = 0x06;
+        private const byte status2 = 0x08;
         private const byte fifoData = 0x09;
         private const byte fifoLevel = 0x0A;
         private const byte mode = 0x11;
@@ -171,6 +172,14 @@ namespace RFIDRC522
             get
             {
                 return version;
+            }
+        }
+
+        public static byte Status2
+        {
+            get
+            {
+                return status2;
             }
         }
     }
@@ -728,7 +737,7 @@ namespace RFIDRC522
             // Wait for (a generous) 25 ms
             System.Threading.Tasks.Task.Delay(25).Wait();
 
-            if ((ReadRegister(Registers.Error) & 0x1B) == 0)
+            if ((ReadRegister(Registers.Error) & 0x1B) == 0 && (ReadRegister(Registers.Status2) & 0x08) != 0)
             {
                 status = 0;
             }
